@@ -98,8 +98,13 @@
         <%- include("./partials/_features.ejs") %> <%-
         include("./partials/_getInTouch.ejs") %>
       </main>
-      <%- include("./partials/_modal.ejs") %> <%-
-      include("./partials/_footer.ejs")%>
+
+      <!--MODALS-->
+      <%- include("./partials/_registerModal.ejs") %> <%-
+      include("./partials/_loginModal.ejs") %>
+
+      <!--MODALS-END-->
+      <%-include("./partials/_footer.ejs")%>
     </div>
 
     <script src="/dist/js/main.min.js"></script>

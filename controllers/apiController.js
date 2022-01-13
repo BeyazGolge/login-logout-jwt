@@ -1,6 +1,7 @@
 const User = require("../models/user");
 
 exports.registerUser = async (req, res) => {
+  console.log(req.body);
   const newuser = new User({
     name: req.body.name,
     lastname: req.body.lastname,
@@ -21,10 +22,8 @@ exports.registerUser = async (req, res) => {
         console.log(err);
         return res.status(400).json({ success: false });
       }
-      res.status(200).json({
-        succes: true,
-        user: doc,
-      });
+
+      res.status(200).redirect("/");
     });
   });
 };
