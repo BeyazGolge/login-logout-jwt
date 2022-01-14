@@ -76,7 +76,6 @@ exports.getDashboardPage = async (req, res) => {
 exports.logoutUser = async (req, res) => {
   req.user.deleteToken(req.token, (err, user) => {
     if (err) return res.status(400).send(err);
-    app.userIN = false;
     res.status(200).redirect("/");
   });
 };
