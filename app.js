@@ -45,5 +45,7 @@ app.use("/api", apiRoute);
 
 app.listen(process.env.PORT || 3000, () => {
   console.log("App is live");
-  console.log(process.env);
+  console.log(process.env.NODE_ENV);
+  console.log(process.env.SECRET);
+  console.log(process.env.DATABASE);
 });
