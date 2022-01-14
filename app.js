@@ -33,18 +33,13 @@ mongoose
     console.log(err);
   });
 
-let userIN = null;
-
 app.get("/", async (req, res) => {
-  const user = await User.findOne({ token: req.cookies.auth });
-  console.log(userIN);
-  if (user) {
-    userIN = true;
-  } else {
-    userIN = false;
-  }
+  const user = req.cookies.auth
+    ? await User.findOne({ token: req.cookies.auth })
+    : null;
+
   res.status(200).render("index", {
-    userIN,
+    userIN: !!user,
   });
 });
 

@@ -54,8 +54,6 @@ exports.loginUser = async (req, res) => {
 
           user.generateToken((err, user) => {
             if (err) return res.status(400).send(err);
-            app.userIN = true;
-
             res.cookie("auth", user.token).redirect("/api/dashboard");
           });
         });
