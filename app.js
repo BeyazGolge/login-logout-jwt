@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const bodyparser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const apiRoute = require("./routes/apiRoute");
+const User = require("./models/user");
+
 // const pageRoute = require("./routes/pageRoute");
 
 const app = express();
@@ -28,8 +30,18 @@ mongoose
     console.log(err);
   });
 
-app.get("/", (req, res) => {
-  res.status(200).render("index");
+let userIN = null;
+
+app.get("/", async (req, res) => {
+  const user = await User.findOne({ token: req.cookies.auth });
+  if (user) {
+    userIN = true;
+  } else {
+    userIN = false;
+  }
+  res.status(200).render("index", {
+    userIN,
+  });
 });
 
 app.use("/api", apiRoute);

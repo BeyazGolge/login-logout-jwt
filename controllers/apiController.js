@@ -1,7 +1,7 @@
 const User = require("../models/user");
+const app = require("../app");
 
 exports.registerUser = async (req, res) => {
-  console.log(req.body);
   const newuser = new User({
     name: req.body.name,
     lastname: req.body.lastname,
@@ -54,11 +54,9 @@ exports.loginUser = async (req, res) => {
 
           user.generateToken((err, user) => {
             if (err) return res.status(400).send(err);
-            res.cookie("auth", user.token).json({
-              isAuth: true,
-              id: user._id,
-              email: user.email,
-            });
+            app.userIN = true;
+
+            res.cookie("auth", user.token).redirect("/api/dashboard");
           });
         });
       });
@@ -67,17 +65,18 @@ exports.loginUser = async (req, res) => {
 };
 
 exports.getDashboardPage = async (req, res) => {
-  res.json({
-    isAuth: true,
-    id: req.user._id,
-    email: req.user.email,
-    name: req.user.name + req.user.lastname,
+  const users = await User.find();
+
+  res.render("dashboard", {
+    name: req.user.name + " " + req.user.lastname,
+    users,
   });
 };
 
 exports.logoutUser = async (req, res) => {
   req.user.deleteToken(req.token, (err, user) => {
     if (err) return res.status(400).send(err);
-    res.sendStatus(200);
+    app.userIN = false;
+    res.status(200).redirect("/");
   });
 };

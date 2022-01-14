@@ -29,10 +29,12 @@
                 <h1 class="hero-title mt-0">
                   Welcome to Gusto & RemoteTeam Bootcamp
                 </h1>
-                <p class="hero-paragraph">
-                  Register or Login to see the dashboard
-                </p>
+
                 <div class="hero-cta">
+                  <% if(!userIN) { %>
+                  <p class="hero-paragraph">
+                    Register or Login to see the dashboard
+                  </p>
                   <button
                     type="button"
                     class="button button-primary"
@@ -45,9 +47,27 @@
                     class="button"
                     data-toggle="modal"
                     data-target="#registerModal"
+                    style="margin-left: 10px"
                   >
                     Register
                   </button>
+                  <%}%> <% if(userIN) { %>
+                  <p class="hero-paragraph">You are already logged in</p>
+                  <a
+                    type="button"
+                    class="button button-primary"
+                    href="/api/dashboard"
+                  >
+                    Go to Dashboard </a
+                  ><a
+                    style="margin-left: 10px"
+                    type="button"
+                    class="button button-dark"
+                    href="/api/logout"
+                  >
+                    Logout
+                  </a>
+                  <%}%>
                 </div>
               </div>
               <div class="hero-figure anime-element">
