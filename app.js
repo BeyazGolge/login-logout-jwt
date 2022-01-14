@@ -4,6 +4,7 @@ const bodyparser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const apiRoute = require("./routes/apiRoute");
 const User = require("./models/user");
+const config = require("./config/config").get(process.env.NODE_ENV);
 
 // const pageRoute = require("./routes/pageRoute");
 
@@ -17,15 +18,12 @@ app.use(express.static("public"));
 
 //Database connection
 mongoose
-  .connect(
-    "mongodb+srv://Cahit:123456789Cahit@cluster0.8xq93.mongodb.net/basic-jwt?retryWrites=true&w=majority",
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      // useFindAndModify: false,
-      // useCreateIndex: true,
-    }
-  )
+  .connect(config.DATABASE, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    // useFindAndModify: false,
+    // useCreateIndex: true,
+  })
   .then(() => {
     console.log("connected to db succesfully");
   })
