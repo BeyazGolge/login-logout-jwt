@@ -45,4 +45,5 @@ app.use("/api", apiRoute);
 
 app.listen(process.env.PORT || 3000, () => {
   console.log("App is live");
+  console.log(process.env);
 });
