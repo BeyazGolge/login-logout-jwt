@@ -17,12 +17,15 @@ app.use(express.static("public"));
 
 //Database connection
 mongoose
-  .connect("mongodb://localhost/basicJwt", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    // useFindAndModify: false,
-    // useCreateIndex: true,
-  })
+  .connect(
+    "mongodb+srv://Cahit:123456789Cahit@cluster0.8xq93.mongodb.net/basic-jwt?retryWrites=true&w=majority",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      // useFindAndModify: false,
+      // useCreateIndex: true,
+    }
+  )
   .then(() => {
     console.log("connected to db succesfully");
   })
@@ -34,6 +37,7 @@ let userIN = null;
 
 app.get("/", async (req, res) => {
   const user = await User.findOne({ token: req.cookies.auth });
+  console.log(userIN);
   if (user) {
     userIN = true;
   } else {
@@ -46,6 +50,6 @@ app.get("/", async (req, res) => {
 
 app.use("/api", apiRoute);
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log("App is live");
 });
