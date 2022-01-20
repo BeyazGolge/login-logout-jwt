@@ -1,5 +1,5 @@
 import * as bcrypt from 'bcrypt';
-import { Document, Schema, Model, model } from 'mongoose';
+import { Schema, Model, model } from 'mongoose';
 
 import { IUserDocument } from '../interfaces/IUserDocument';
 
@@ -16,7 +16,7 @@ const salt = 10;
 export interface IUser extends IUserDocument {
   comparePassword(password: string): boolean;
   generateToken(): void;
-  deleteToken(): Document;
+  deleteToken(): void;
 }
 
 export interface IUserModel extends Model<IUser> {
@@ -83,18 +83,22 @@ userSchema.method('generateToken', async function () {
 
 userSchema.method('deleteToken', async function () {
   try {
-    this.updateOne({ $unset: { token: 1 } });
+    await this.updateOne({ $unset: { token: 1 } });
   } catch (error) {
     throw error;
   }
 });
 
 userSchema.static('findByToken', async function (token) {
-  try {
-    const decodedToken = jwt.verify(token, config.SECRET);
-    return await this.findOne({ _id: decodedToken, token });
-  } catch (error) {
-    throw error;
+  if (token) {
+    try {
+      const decodedToken = await jwt.verify(token, config.SECRET);
+      return await this.findOne({ _id: decodedToken, token });
+    } catch (error) {
+      return null;
+    }
+  } else {
+    return null;
   }
 });
 

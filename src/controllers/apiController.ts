@@ -1,7 +1,7 @@
 import User from '../models/user';
 import { Request, Response } from 'express';
 
-export const registerUser = async (req: Request, res: Response) => {
+export async function registerUser(req: Request, res: Response) {
   const newuser = new User({
     name: req.body.name,
     lastname: req.body.lastname,
@@ -11,25 +11,25 @@ export const registerUser = async (req: Request, res: Response) => {
   });
 
   if (newuser.password !== newuser.password2)
-    return res.status(400).json({ message: 'password not match' });
+    res.status(400).json({ message: 'password not match' });
 
   try {
     const user = await User.findOne({ email: newuser.email });
     if (user) {
-      return res.status(400).json({ auth: false, message: 'email exists' });
+      res.status(400).json({ auth: false, message: 'email exists' });
     } else {
       await newuser.save();
-      return res.status(200).redirect('/');
+      res.status(200).redirect('/');
     }
   } catch (error) {
-    return res.status(400).json({ auth: false, message: 'an error occured' });
+    res.status(400).json({ auth: false, message: 'an error occured' });
   }
-};
+}
 
 export const loginUser = async (req: Request, res: Response) => {
   const token = req.cookies.auth;
 
-  let user = User.findByToken(token);
+  let user = await User.findByToken(token);
 
   if (user) {
     return res.status(400).json({
@@ -60,7 +60,7 @@ export const loginUser = async (req: Request, res: Response) => {
 export const getDashboardPage = async (req: Request, res: Response) => {
   const users = await User.find();
   const token = req.cookies.auth;
-  const user = User.findByToken(token)!;
+  const user = await User.findByToken(token)!;
   res.render('dashboard', {
     name: user.name + ' ' + user.lastname,
     users,
@@ -69,7 +69,7 @@ export const getDashboardPage = async (req: Request, res: Response) => {
 
 export const logoutUser = async (req: Request, res: Response) => {
   const token = req.cookies.auth;
-  const user = User.findByToken(token)!;
+  const user = await User.findByToken(token)!;
   user.deleteToken();
   res.status(200).redirect('/');
 };

@@ -52,7 +52,4 @@ app.use('/api', apiRoute);
 app.listen(process.env.PORT || 3000, () => {
   // tslint:disable-next-line:no-console
   console.log('App is live');
-  // console.log(process.env.NODE_ENV);
-  // console.log(process.env.SECRET);
-  // console.log(process.env.DATABASE);
 });
