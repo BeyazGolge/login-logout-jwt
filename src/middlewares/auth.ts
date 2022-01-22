@@ -1,6 +1,7 @@
 import User from '../models/user';
 import { Request, Response, NextFunction } from 'express';
 
+// Checks if there is a database entry with the Token in the cookies, if found user is already logged in
 const auth = async (req: Request, res: Response, next: NextFunction) => {
   const token = req.cookies.auth;
   const user = await User.findByToken(token);

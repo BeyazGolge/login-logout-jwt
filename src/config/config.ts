@@ -2,6 +2,8 @@ enum environmentVariables {
   secret = 'SECRET',
   mongoDbUri = 'MONGODB_URI',
 }
+
+// COnfig file is used to seperate the local test credentials with deployment credentials
 const config = {
   production: {
     SECRET: process.env[environmentVariables.secret] || '',

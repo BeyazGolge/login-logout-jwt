@@ -13,16 +13,19 @@ const config = get(
 );
 const salt = 10;
 
+// Add Documents methods
 export interface IUser extends IUserDocument {
   comparePassword(password: string): boolean;
   generateToken(): void;
   deleteToken(): void;
 }
 
+// Add Models methods
 export interface IUserModel extends Model<IUser> {
   findByToken(token: string): IUser | null;
 }
 
+// Create a User Schema
 export const userSchema: Schema = new Schema({
   name: {
     type: String,
@@ -50,6 +53,7 @@ export const userSchema: Schema = new Schema({
   },
 });
 
+// Before saving check if the password is modified, if modified hash the password
 userSchema.pre('save', function (next) {
   const user = this;
   if (user.isModified('password')) {
@@ -71,16 +75,19 @@ userSchema.pre('save', function (next) {
   }
 });
 
+// Compare the password given by the user with password in the database
 userSchema.method('comparePassword', async function (password: string) {
   return await bcrypt.compare(password, this.password);
 });
 
+// Generate a token with the users ID and write it to users database
 userSchema.method('generateToken', async function () {
   const token: string = jwt.sign(this._id.toHexString(), config.SECRET);
   this.token = token;
   await this.save();
 });
 
+// Delete the token from the database
 userSchema.method('deleteToken', async function () {
   try {
     await this.updateOne({ $unset: { token: 1 } });
@@ -89,6 +96,7 @@ userSchema.method('deleteToken', async function () {
   }
 });
 
+// Find the user by using the token in cookie
 userSchema.static('findByToken', async function (token) {
   if (token) {
     try {

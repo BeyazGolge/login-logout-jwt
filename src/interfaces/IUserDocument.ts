@@ -1,5 +1,5 @@
 import { Document } from 'mongoose';
-
+// User interface
 export interface IUserDocument extends Document {
   name: string;
   lastname: string;

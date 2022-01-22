@@ -21,22 +21,16 @@ app.use(cookieParser());
 app.use(express.static('public'));
 
 // Database connection
-mongoose
-  .connect(config.DATABASE, {
+
+try {
+  mongoose.connect(config.DATABASE, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    // useFindAndModify: false,
-    // useCreateIndex: true,
-  } as mongoose.ConnectOptions)
-  .then(() => {
-    // tslint:disable-next-line:no-console
-    console.log('connected to db succesfully');
-  })
-  .catch((err: any) => {
-    // tslint:disable-next-line:no-console
-    console.log(err);
-  });
-
+  } as mongoose.ConnectOptions);
+} catch (error) {
+  throw error;
+}
+// If user is found by the token send the user data to front end
 app.get('/', async (req, res) => {
   const user = req.cookies.auth
     ? await User.findOne({ token: req.cookies.auth })
