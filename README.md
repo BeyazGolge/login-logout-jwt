@@ -4,7 +4,7 @@
 
 ### Introduction
 
-This project is made for learning the JavascriptWebTokens
+This project is made for learning the JsonWebTokens
 There are three branches at the moment
 
 - master branch is written with Javascript
