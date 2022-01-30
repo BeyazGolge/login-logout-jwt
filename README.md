@@ -5,12 +5,11 @@
 ### Introduction
 
 This project is made for learning the JavascriptWebTokens
-There are two branches at the moment
+There are three branches at the moment
 
 - master branch is written with Javascript
 - typescript branch is written with ...Yeah you guessed it right, Typescript
-
-Project uses MongoDB with Mongoose at the moment but will be migrated to MySql with TypeORM
+- The other branches uses mongoDB, Mysql branch uses Mysql with typeOrm
 
 You can register and login to the webpage and can see all the members on the Dashboard Page
 
